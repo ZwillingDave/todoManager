@@ -1,29 +1,30 @@
 package com.example.todoManager.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.*;
-import org.antlr.v4.runtime.misc.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@Entity
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Entity
 @Table(name = "users")
-public class User {
+public class User implements TodoOwner{
     @Id
-    private String id;
+    @Column(name = "uuid", nullable = false)
+    private String uuid;
 
-    @Column(unique = true, nullable = false)
-    private String username;
-
-    @Column(unique = true, nullable = false)
+    private String name;
     private String email;
-
-    @Column(nullable = false)
     private String password;
+
+    @ManyToMany(mappedBy = "users")
+    private List<Group> groups = new ArrayList<>();
+
+    @OneToMany(mappedBy = "todoOwnerUuid")
+    private List<Todo> todos = new ArrayList<>();
 }
