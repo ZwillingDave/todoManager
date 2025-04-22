@@ -22,8 +22,8 @@ public class Todo {
     private String todoOwnerUuid;
 
 
-    public void setOwner(TodoOwner resolve) {
-        this.todoOwnerUuid = resolve.getUuid();
+    public void setOwner(TodoOwner todoOwner) {
+        this.todoOwnerUuid = todoOwner.getUuid();
     }
 
 }
