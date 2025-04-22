@@ -1,6 +1,5 @@
 package com.example.todoManager.controller;
 
-import com.example.todoManager.dto.GroupDTO;
 import com.example.todoManager.model.Group;
 import com.example.todoManager.model.Todo;
 import com.example.todoManager.model.TodoOwner;
@@ -9,11 +8,9 @@ import com.example.todoManager.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
-import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
