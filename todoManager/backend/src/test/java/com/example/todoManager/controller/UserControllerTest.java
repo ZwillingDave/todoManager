@@ -1,5 +1,6 @@
 package com.example.todoManager.controller;
 
+import com.example.todoManager.exception.UserNotFoundException;
 import com.example.todoManager.model.Group;
 import com.example.todoManager.model.Todo;
 import com.example.todoManager.model.TodoOwner;
@@ -15,11 +16,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
 class UserControllerTest {
@@ -80,10 +79,18 @@ class UserControllerTest {
     }
     @Test
     void testGetUserGroups_userNotFound_returnsNotFound() throws Exception {
-        Mockito.when(userService.findByUuid("uuid")).thenThrow(RuntimeException.class);
+        Mockito.when(userService.findByUuid("uuid")).thenThrow(UserNotFoundException.class);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/users/uuid/groups"))
                 .andExpect(result -> assertEquals(404, result.getResponse().getStatus()));
+    }
+
+    @Test
+    void testGetUserGroups_invalidServerError() throws Exception {
+        Mockito.when(userService.findByUuid("uuid")).thenThrow(RuntimeException.class);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/uuid/groups"))
+                .andExpect(result -> assertEquals(500, result.getResponse().getStatus()));
     }
     @Test
     void testGetUserGroups_withInvalidUser_returnsBadRequest() throws Exception {
@@ -126,9 +133,16 @@ class UserControllerTest {
 
     @Test
     void testGetUserTodos_userNotFound_returnsNotFound() throws Exception {
-        Mockito.when(userService.findByUuid("missing")).thenThrow(RuntimeException.class);
+        Mockito.when(userService.findByUuid("missing")).thenThrow(UserNotFoundException.class);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/users/missing/todos"))
                 .andExpect(result -> assertEquals(404, result.getResponse().getStatus()));
+    }
+    @Test
+    void testGetUserTodos_internalServerError() throws Exception {
+        Mockito.when(userService.findByUuid("uuid")).thenThrow(RuntimeException.class);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/uuid/todos"))
+                .andExpect(result -> assertEquals(500, result.getResponse().getStatus()));
     }
 }
