@@ -1,5 +1,6 @@
 package com.example.todoManager.controller;
 
+import com.example.todoManager.exception.UserNotFoundException;
 import com.example.todoManager.dto.GroupDTO;
 import com.example.todoManager.dto.TodoDTO;
 import com.example.todoManager.dto.UserDTO;
@@ -70,7 +71,7 @@ public class UserController {
             return ResponseEntity.ok(groupDTOs);
 
 
-        } catch (RuntimeException e) {
+        } catch (UserNotFoundException e) {
             return ResponseEntity
                     .notFound()
                     .build();
@@ -102,7 +103,7 @@ public class UserController {
 
             return ResponseEntity.ok(todoDTOs);
 
-        } catch (RuntimeException e) {
+        } catch (UserNotFoundException e) {
             return ResponseEntity
                     .notFound()
                     .build();
