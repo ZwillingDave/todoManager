@@ -3,18 +3,27 @@ package com.example.todoManager.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Builder
-@Entity
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "todos")
+@Builder
+@Getter
+@Setter
+@Entity
+@Table(name = "todo")
 public class Todo {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Column(name = "uuid", nullable = false)
+    private String uuid;
+
     private String title;
     private String description;
-    private Boolean completed;
+
+    @Column(name = "todo_owner_uuid")
+    private String todoOwnerUuid;
+
+
+    public void setOwner(TodoOwner resolve) {
+        this.todoOwnerUuid = resolve.getUuid();
+    }
+
 }
