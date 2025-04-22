@@ -14,7 +14,6 @@ public class TodoService {
 
     @Autowired
     public TodoService(TodoRepository todoRepository) {
-//        this.resolverRegistry = registry;
         this.todoRepository = todoRepository;
     }
 
