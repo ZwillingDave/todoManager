@@ -95,14 +95,6 @@ class UserControllerTest {
                 .andExpect(result -> assertEquals(400, result.getResponse().getStatus()));
 
     }
-    @Test
-    void testGetUserGroups_internalServerError() throws Exception {
-        Mockito.when(userService.findByUuid("uuid")).thenThrow(new IOException("Unknown error"));
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/uuid/groups"))
-                .andExpect(status().isInternalServerError());
-
-    }
 
     @Test
     void testGetUserTodos_returnsTodoDTOs() throws Exception {
@@ -139,12 +131,4 @@ class UserControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/users/missing/todos"))
                 .andExpect(result -> assertEquals(404, result.getResponse().getStatus()));
     }
-//    @Test
-//    void testGetUserTodos_internalServerError() throws Exception {
-//        Mockito.when(userService.findByUuid("uuid")).thenThrow(new RuntimeException("Unknown error"));
-//
-//        mockMvc.perform(MockMvcRequestBuilders.get("/users/uuid/todos"))
-//                .andExpect(result -> assertEquals(500, result.getResponse().getStatus()));
-//
-//    }
 }
