@@ -2,6 +2,7 @@ package com.example.todoManager.controller;
 
 import com.example.todoManager.dto.auth.LoginRequest;
 import com.example.todoManager.dto.auth.AuthResponse;
+import com.example.todoManager.dto.auth.SignupRequest;
 import com.example.todoManager.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,18 @@ public class AuthController {
         this.authService = authService;
     }
 
+    @PostMapping("/signup")
+    public ResponseEntity<AuthResponse> signup(@RequestBody SignupRequest signupRequest) {
+        AuthResponse response = authService.signup(signupRequest);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
-        return null;
+        AuthResponse response = authService.login(loginRequest);
+        if (!response.getSuccess()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(response);
     }
 }
