@@ -1,6 +1,7 @@
 package com.example.todoManager.service;
 
 import com.example.todoManager.dto.auth.AuthResponse;
+import com.example.todoManager.dto.auth.SignupRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,13 +18,16 @@ class AuthServiceTest {
     @Mock
     private UserService userService;
 
+    @Mock
+    private SignupRequest signupRequest;
+
     @BeforeEach
     void setUp() {
     }
 
     @Test
     void signupShouldReturnAuthResponse() {
-        AuthResponse response = authService.signup();
+        AuthResponse response = authService.signup(signupRequest);
         assertNotNull(response);
         assertEquals(AuthResponse.class, response.getClass());
     }
