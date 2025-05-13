@@ -4,12 +4,10 @@ import com.example.todoManager.dto.auth.AuthResponse;
 import com.example.todoManager.dto.auth.LoginRequest;
 import com.example.todoManager.dto.auth.SignupRequest;
 import com.example.todoManager.model.User;
-import com.example.todoManager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.UUID;
 
 @Service
 public class AuthService {
