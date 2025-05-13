@@ -43,7 +43,7 @@ class UserControllerTest {
 
         BDDMockito.given(userService.getAllUsers()).willReturn(List.of(user));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users"))
                 .andExpect(result -> assertEquals(200, result.getResponse().getStatus()))
                 .andExpect(result -> assertNotNull(result.getResponse().getContentAsString()))
                 .andExpect(result -> assertEquals("""
@@ -53,7 +53,7 @@ class UserControllerTest {
     void testGetAllUsers_internalServerError() throws Exception {
         Mockito.when(userService.getAllUsers()).thenThrow(new RuntimeException("Unknown error"));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users"))
                 .andExpect(result -> assertEquals(500, result.getResponse().getStatus()));
 
     }
@@ -68,7 +68,7 @@ class UserControllerTest {
 
         BDDMockito.given(userService.findByUuid("uuid")).willReturn(user);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/uuid/groups"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/uuid/groups"))
                 .andExpect(result -> assertEquals(200, result.getResponse().getStatus()))
                 .andExpect(result -> assertNotNull(result.getResponse().getContentAsString()))
                 .andExpect(result -> assertEquals("""
@@ -81,7 +81,7 @@ class UserControllerTest {
     void testGetUserGroups_userNotFound_returnsNotFound() throws Exception {
         Mockito.when(userService.findByUuid("uuid")).thenThrow(UserNotFoundException.class);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/uuid/groups"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/uuid/groups"))
                 .andExpect(result -> assertEquals(404, result.getResponse().getStatus()));
     }
 
@@ -89,7 +89,7 @@ class UserControllerTest {
     void testGetUserGroups_invalidServerError() throws Exception {
         Mockito.when(userService.findByUuid("uuid")).thenThrow(RuntimeException.class);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/uuid/groups"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/uuid/groups"))
                 .andExpect(result -> assertEquals(500, result.getResponse().getStatus()));
     }
     @Test
@@ -98,7 +98,7 @@ class UserControllerTest {
 
         Mockito.when(userService.findByUuid("uuid")).thenReturn(other);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/uuid/groups"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/uuid/groups"))
                 .andExpect(result -> assertEquals(400, result.getResponse().getStatus()));
 
     }
@@ -113,7 +113,7 @@ class UserControllerTest {
 
         BDDMockito.given(userService.findByUuid("uuid")).willReturn(user);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/uuid/todos"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/uuid/todos"))
                 .andExpect(result -> assertEquals(200, result.getResponse().getStatus()))
                 .andExpect(result -> assertNotNull(result.getResponse().getContentAsString()))
                 .andExpect(result -> assertEquals("""
@@ -127,7 +127,7 @@ class UserControllerTest {
 
         Mockito.when(userService.findByUuid("uuid")).thenReturn(other);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/uuid/todos"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/uuid/todos"))
                 .andExpect(result -> assertEquals(400, result.getResponse().getStatus()));
     }
 
@@ -135,14 +135,14 @@ class UserControllerTest {
     void testGetUserTodos_userNotFound_returnsNotFound() throws Exception {
         Mockito.when(userService.findByUuid("missing")).thenThrow(UserNotFoundException.class);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/missing/todos"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/missing/todos"))
                 .andExpect(result -> assertEquals(404, result.getResponse().getStatus()));
     }
     @Test
     void testGetUserTodos_internalServerError() throws Exception {
         Mockito.when(userService.findByUuid("uuid")).thenThrow(RuntimeException.class);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/uuid/todos"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/uuid/todos"))
                 .andExpect(result -> assertEquals(500, result.getResponse().getStatus()));
     }
 }
