@@ -32,7 +32,7 @@ class TokenServiceTest {
 
     @BeforeEach
     void setUp() {
-        tokenService = new TokenService(jwtWrapper);
+        tokenService = new TokenService("my-test-secret-for-java-unittest", jwtWrapper);
     }
 
     @Test
@@ -68,7 +68,7 @@ class TokenServiceTest {
 
     @Test
     void validateTokenDoesNotThrowException() {
-        String validToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJleHAiOjU3NDE5NDI1ODN9.0xkhKS8VKl-m4meKIEkd6-qXm_OZox1EkvWzNUTphLs";
+        String validToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJleHAiOjU3NDE5NDI1ODN9.Y5qGWfJytOsFajWT5pswHgyXdtNjWOrCmNbDnLiF9F0";
         tokenService.validateToken(validToken);
     }
 
