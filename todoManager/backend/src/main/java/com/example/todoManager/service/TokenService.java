@@ -9,16 +9,22 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.todoManager.exception.JWTValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 
 @Service
 public class TokenService {
-    private JWTWrapper jwtWrapper;
+
+
+    private final String secret;
+
+    private final JWTWrapper jwtWrapper;
 
     @Autowired
-    public TokenService(JWTWrapper jwtWrapper) {
+    public TokenService(@Value("${jwt.secret}") String secret, JWTWrapper jwtWrapper) {
+        this.secret = secret;
         this.jwtWrapper = jwtWrapper;
     }
 
@@ -45,7 +51,7 @@ public class TokenService {
     }
 
     public void validateToken(String token) throws JWTVerificationException {
-        Algorithm algorithm = Algorithm.HMAC256("Kaiser");
+        Algorithm algorithm = Algorithm.HMAC256(secret);
         JWTVerifier verifier = JWT.require(algorithm).build();
         verifier.verify(token);
     }
