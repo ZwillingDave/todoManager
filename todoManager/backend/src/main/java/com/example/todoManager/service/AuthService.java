@@ -49,7 +49,12 @@ public class AuthService {
         }
         User user = userService.findByEmail(loginRequest.getEmail());
 
-        // TODO: Check password
+        if(!user.getPassword().equals(loginRequest.getPassword())) {
+            return AuthResponse.builder()
+                    .message("Incorrect password")
+                    .success(false)
+                    .build();
+        }
 
         return AuthResponse.builder()
                 .token(tokenService.createToken(user.getUuid(), user.getName(), Instant.now().plusSeconds(3600)))
