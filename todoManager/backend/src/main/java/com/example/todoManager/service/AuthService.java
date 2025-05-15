@@ -5,6 +5,7 @@ import com.example.todoManager.dto.auth.LoginRequest;
 import com.example.todoManager.dto.auth.SignupRequest;
 import com.example.todoManager.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -24,11 +25,12 @@ public class AuthService {
         if(userService.doesUserExist(signupRequest.getEmail())) {
             throw new RuntimeException("User already exists");
         }
+
         User user = User.builder()
                 .uuid("user-" + new UUIDWrapper().createUUID())
                 .name(signupRequest.getName())
                 .email(signupRequest.getEmail())
-                .password(signupRequest.getPassword()) // TODO: Hash password
+                .password(BCrypt.hashpw(signupRequest.getPassword(), BCrypt.gensalt()))
                 .build();
 
         userService.save(user);
@@ -49,12 +51,13 @@ public class AuthService {
         }
         User user = userService.findByEmail(loginRequest.getEmail());
 
-        if(!user.getPassword().equals(loginRequest.getPassword())) {
+        if(!BCrypt.checkpw(loginRequest.getPassword(), user.getPassword())) {
             return AuthResponse.builder()
                     .message("Incorrect password")
                     .success(false)
                     .build();
         }
+
 
         return AuthResponse.builder()
                 .token(tokenService.createToken(user.getUuid(), user.getName(), Instant.now().plusSeconds(3600)))
