@@ -14,11 +14,11 @@ public class JWTWrapper {
     @Value("${jwt.secret}")
     private String secret;
 
-    public String createJWTToken(String uuid, String email, Instant expiryDate) throws JWTCreationException {
+    public String createJWTToken(String uuid, String username, Instant expiryDate) throws JWTCreationException {
         Algorithm algorithm = Algorithm.HMAC256(secret);
         return JWT.create()
                 .withClaim("uuid", uuid)
-                .withClaim("email", email)
+                .withClaim("username", username)
                 .withExpiresAt(expiryDate)
                 .sign(algorithm);
     }
