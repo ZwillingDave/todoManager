@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collections;
 
 public class JWTAuthFilter extends OncePerRequestFilter {
     private final TokenService tokenService;
