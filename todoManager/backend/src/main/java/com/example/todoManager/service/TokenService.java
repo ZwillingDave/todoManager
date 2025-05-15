@@ -28,10 +28,10 @@ public class TokenService {
         this.jwtWrapper = jwtWrapper;
     }
 
-    public String createToken(String uuid, String userName, Instant expiryDate) {
+    public String createToken(String uuid, String username, Instant expiryDate) {
         String jwt = "";
         JWTValidationException exception = new JWTValidationException();
-        if (userName == null || userName.isEmpty()) {
+        if (username == null || username.isEmpty()) {
             exception.addMessage("Username not valid when creating new JWT.");
         }
         if (expiryDate == null) {
@@ -39,7 +39,7 @@ public class TokenService {
         }
         try {
 
-            jwt = jwtWrapper.createJWTToken(uuid ,userName, expiryDate);
+            jwt = jwtWrapper.createJWTToken(uuid ,username, expiryDate);
 
         } catch (JWTCreationException jwtCreationException) {
             exception.addMessage(jwtCreationException.getMessage());
