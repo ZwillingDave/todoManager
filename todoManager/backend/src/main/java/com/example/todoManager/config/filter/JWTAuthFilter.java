@@ -33,7 +33,17 @@ public class JWTAuthFilter extends OncePerRequestFilter {
                 String token = header.split(" ")[1].trim();
                 tokenService.validateToken(token);
                 String username = tokenService.getUserNameFromToken(token);
-                UserDetails userDetails = new User(username, "", Collections.singletonList(new SimpleGrantedAuthority("USER")));
+
+                if (username == null || username.trim().isEmpty()) {
+                    throw new JWTVerificationException("Invalid username in token");
+                }
+
+                UserDetails userDetails = User.builder()
+                        .username(username)
+                        .password("")
+                        .authorities(new SimpleGrantedAuthority("USER"))
+                        .build();
+
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(auth);
