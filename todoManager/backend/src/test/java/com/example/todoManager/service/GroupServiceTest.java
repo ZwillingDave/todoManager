@@ -1,5 +1,6 @@
 package com.example.todoManager.service;
 
+import com.example.todoManager.exception.GroupNotFoundException;
 import com.example.todoManager.model.Group;
 import com.example.todoManager.repository.GroupRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,7 +49,7 @@ class GroupServiceTest {
     void findById_shouldThrowExceptionWhenGroupNotFound() {
         Mockito.when(groupRepository.findById("test")).thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> groupService.findByUuid("test"));
+        GroupNotFoundException exception = assertThrows(GroupNotFoundException.class, () -> groupService.findByUuid("test"));
 
         assertEquals("Group not found", exception.getMessage());
     }
