@@ -16,13 +16,26 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 public class JWTAuthFilter extends OncePerRequestFilter {
     private final TokenService tokenService;
 
+    private final List<String> EXCLUDED_PATHS = List.of(
+            "/api/auth/login",
+            "/api/auth/signup",
+            "/h2-console"
+    );
+
     @Autowired
     public JWTAuthFilter(TokenService tokenService) {
         this.tokenService = tokenService;
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return path.startsWith("/api/auth") || path.startsWith("/h2-console");
     }
 
     @Override
@@ -49,6 +62,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } catch (JWTVerificationException e) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid Token");
+                return;
             }
         }
 
