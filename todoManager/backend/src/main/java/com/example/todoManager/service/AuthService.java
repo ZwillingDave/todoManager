@@ -3,6 +3,7 @@ package com.example.todoManager.service;
 import com.example.todoManager.dto.auth.AuthResponse;
 import com.example.todoManager.dto.auth.LoginRequest;
 import com.example.todoManager.dto.auth.SignupRequest;
+import com.example.todoManager.exception.SignupRequestException;
 import com.example.todoManager.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -22,6 +23,10 @@ public class AuthService {
     }
 
     public AuthResponse signup(SignupRequest signupRequest) {
+        SignupRequestException signupRequestException = new SignupRequestException();
+        if (checkRequestVariables(signupRequest, signupRequestException)){
+            throw signupRequestException;
+        };
         if(userService.doesUserExist(signupRequest.getEmail())) {
             throw new RuntimeException("User already exists");
         }
@@ -65,5 +70,18 @@ public class AuthService {
                 .path("/dashboard")
                 .success(true)
                 .build();
+    }
+
+    private static Boolean checkRequestVariables(SignupRequest signupRequest, SignupRequestException signupRequestException) {
+        if (signupRequest.getName() == null || signupRequest.getName().isEmpty()){
+            signupRequestException.addMessage("Non Valid Username");
+        }
+        if (signupRequest.getEmail() == null || signupRequest.getEmail().isEmpty()){
+            signupRequestException.addMessage("Non Valid Email");
+        }
+        if (signupRequest.getPassword() == null || signupRequest.getPassword().isEmpty()){
+            signupRequestException.addMessage("Non Valid Password");
+        }
+        return signupRequestException.shouldBeThrown();
     }
 }
