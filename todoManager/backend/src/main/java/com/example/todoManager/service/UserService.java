@@ -1,5 +1,6 @@
 package com.example.todoManager.service;
 
+import com.example.todoManager.exception.UserNotFoundException;
 import com.example.todoManager.model.TodoOwner;
 import com.example.todoManager.model.User;
 import com.example.todoManager.repository.UserRepository;
@@ -28,7 +29,7 @@ public class UserService {
     public TodoOwner findByUuid(String uuid) {
         Optional<User> user = userRepository.findById(uuid);
         if (user.isEmpty()) {
-            throw new RuntimeException("User not found");
+            throw new UserNotFoundException("User not found");
         }
         return user.get();
     }
@@ -36,7 +37,7 @@ public class UserService {
     public User findByEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty()) {
-            throw new RuntimeException("User not found");
+            throw new UserNotFoundException("User not found");
         }
         return user.get();
     }
