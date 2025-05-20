@@ -1,5 +1,6 @@
 package com.example.todoManager.controller;
 
+import com.example.todoManager.dto.TodoDTO;
 import com.example.todoManager.dto.UserDTO;
 import com.example.todoManager.model.Group;
 import com.example.todoManager.model.Todo;
@@ -29,12 +30,17 @@ public class GroupController {
     public ResponseEntity<List<UserDTO>> getUserGroups(@PathVariable String uuid) {
         TodoOwner todoOwner = groupService.findByUuid(uuid);
 
+
         if (todoOwner == null) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .build();
         }
+
         if (todoOwner instanceof Group group) {
+            if (group.getUsers().isEmpty()) {
+                return ResponseEntity.badRequest().build();
+            }
             List<UserDTO> userDTOs = group.getUsers().stream()
                     .map(user -> UserDTO.builder()
                             .uuid(user.getUuid())
@@ -52,7 +58,29 @@ public class GroupController {
         }
     }
     @GetMapping("/{uuid}/todos")
-    public Iterable<Todo> getGroupTodos(@PathVariable String uuid) {
-        return groupService.findByUuid(uuid).getTodos();
+    public ResponseEntity<List<TodoDTO>> getGroupTodos(@PathVariable String uuid) {
+        TodoOwner todoOwner = groupService.findByUuid(uuid);
+
+        if (todoOwner == null) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .build();
+        }
+        if (todoOwner instanceof Group group) {
+            List<TodoDTO> todoDTOs = group.getTodos().stream()
+                    .map(todo -> TodoDTO.builder()
+                            .uuid(todo.getUuid())
+                            .title(todo.getTitle())
+                            .description(todo.getDescription())
+                            .build())
+                    .toList();
+
+            return ResponseEntity.ok(todoDTOs);
+
+        } else {
+            return ResponseEntity
+                    .notFound()
+                    .build();
+        }
     }
 }
