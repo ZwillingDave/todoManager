@@ -1,5 +1,6 @@
 package com.example.todoManager.service;
 
+import com.example.todoManager.exception.UserNotFoundException;
 import com.example.todoManager.model.User;
 import com.example.todoManager.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,8 +65,52 @@ class UserServiceTest {
     void findById_shouldThrowExceptionIfUserNotFound() {
         Mockito.when(userRepository.findById("test")).thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> userService.findByUuid("test"));
+        UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> userService.findByUuid("test"));
 
         assertEquals("User not found", exception.getMessage());
+    }
+
+    @Test
+    void findByEmail_shouldReturnUser() {
+        String mail = "user@user.at";
+        User user = User.builder().email(mail).build();
+
+        Mockito.when(userRepository.findByEmail(mail)).thenReturn(Optional.of(user));
+
+        User resultUser = userService.findByEmail(mail);
+        assertEquals(user, resultUser);
+    }
+
+    @Test
+    void findByEmail_InvalidEmail_throwsUserNotFoundException() {
+        Mockito.when(userRepository.findByEmail(null)).thenReturn(Optional.empty());
+
+        UserNotFoundException userNotFoundException = assertThrows(UserNotFoundException.class, () -> {
+            userService.findByEmail(null);
+        });
+        assertEquals("User not found", userNotFoundException.getMessage());
+
+    }
+
+    @Test
+    void doesUserExist_whenUserExist_returnTrue() {
+        String mail = "user@user.at";
+        Mockito.when(userRepository.findByEmail(mail)).thenReturn(Optional.of(new User()));
+
+        Boolean result = userService.doesUserExist(mail);
+
+        assertTrue(result);
+        Mockito.verify(userRepository, Mockito.times(1)).findByEmail(mail);
+    }
+
+    @Test
+    void doesUserExist_whenUserDoesNotExist_returnFalse() {
+        String mail = "nonexistent@email.com";
+        Mockito.when(userRepository.findByEmail(mail)).thenReturn(Optional.empty());
+
+        Boolean result = userService.doesUserExist(mail);
+
+        assertFalse(result);
+        Mockito.verify(userRepository, Mockito.times(1)).findByEmail(mail);
     }
 }
