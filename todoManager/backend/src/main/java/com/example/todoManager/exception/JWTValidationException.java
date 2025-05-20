@@ -1,10 +1,14 @@
 package com.example.todoManager.exception;
 
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class JWTValidationException extends RuntimeException {
+
     private List<String> messages = new ArrayList<>();
 
     public JWTValidationException() {
@@ -22,7 +26,4 @@ public class JWTValidationException extends RuntimeException {
         return !messages.isEmpty();
     }
 
-    public List<String> getMessages() {
-        return messages;
-    }
 }
