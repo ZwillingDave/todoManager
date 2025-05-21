@@ -1,5 +1,6 @@
 package com.example.todoManager.service;
 
+import com.example.todoManager.exception.TodoNotFoundException;
 import com.example.todoManager.model.Todo;
 import com.example.todoManager.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class TodoService {
     public Todo findById(String todoId) {
         Optional<Todo> todo = todoRepository.findById(todoId);
         if (todo.isEmpty()) {
-            throw new RuntimeException("Todo not found");
+            throw new TodoNotFoundException("Todo not found");
         }
         return todo.get();
     }
