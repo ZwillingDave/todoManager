@@ -1,5 +1,6 @@
 package com.example.todoManager.controller;
 
+import com.example.todoManager.exception.TodoNotFoundException;
 import com.example.todoManager.model.Todo;
 import com.example.todoManager.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class TodoController {
         try {
             Todo todo = todoService.findById(todoId);
             return ResponseEntity.ok(todo);
-        } catch (RuntimeException e) {
+        } catch (TodoNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
