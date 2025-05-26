@@ -4,6 +4,7 @@ import com.example.todoManager.dto.auth.AuthResponse;
 import com.example.todoManager.dto.auth.LoginRequest;
 import com.example.todoManager.dto.auth.SignupRequest;
 import com.example.todoManager.service.AuthService;
+import com.example.todoManager.service.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,9 @@ class AuthControllerTest {
 
     @MockitoBean
     private AuthService authService;
+
+    @MockitoBean
+    private TokenService tokenService;
 
     @Autowired
     private ObjectMapper objectMapper;
