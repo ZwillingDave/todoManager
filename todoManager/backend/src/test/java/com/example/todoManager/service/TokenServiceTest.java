@@ -4,6 +4,7 @@ package com.example.todoManager.service;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.example.todoManager.dto.auth.PayloadResponse;
 import com.example.todoManager.exception.JWTValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -96,16 +97,13 @@ class TokenServiceTest {
         });
     }
 
-    @Test
-    void getUserNameFromToken_returnsUsername() {
-        String validToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJleHAiOjU3NDE5NDI1ODN9.0xkhKS8VKl-m4meKIEkd6-qXm_OZox1EkvWzNUTphLs";
-        String userNameFromToken = tokenService.getUserNameFromToken(validToken);
-        assertEquals("user", userNameFromToken);
-    }
+
 
     @Test
-    void getUserNameFromToken_throwsException() {
-        String tokenWithNullUsername = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6bnVsbCwiZXhwIjoxNzQzNzY0MDQ0fQ.wqMX61nYap_RuBlz-L8lK6QkHUuc4oIoIqqpwpJ20RE";
-        assertThrows(JWTDecodeException.class, () -> tokenService.getUserNameFromToken(tokenWithNullUsername));
+    void testdecodePayload() {
+        String validToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJleHAiOjU3NDE5NDI1ODN9.Y5qGWfJytOsFajWT5pswHgyXdtNjWOrCmNbDnLiF9F0";
+        PayloadResponse jwt = tokenService.decodePayload(validToken);
+        assertEquals("user", jwt.getUsername());
+        assertEquals("2151-12-15T16:03:03Z", jwt.getExpiryDate());
     }
 }

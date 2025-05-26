@@ -7,6 +7,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.todoManager.dto.auth.PayloadResponse;
 import com.example.todoManager.exception.JWTValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,11 +57,17 @@ public class TokenService {
         verifier.verify(token);
     }
 
-    public String getUserNameFromToken(String token) {
+    public PayloadResponse decodePayload(String token) {
+
         DecodedJWT jwt = JWT.decode(token);
-        if (jwt.getClaim("username").isNull()) {
+        if (jwt.getClaim("username").isNull() || jwt.getExpiresAt() == null) {
             throw new JWTDecodeException("Invalid Token");
         }
-        return jwt.getClaim("username").asString();
+        String username = jwt.getClaim("username").asString();
+        String expiryDate = jwt.getExpiresAt().toInstant().toString();
+        return PayloadResponse.builder()
+                .username(username)
+                .expiryDate(expiryDate)
+                .build();
     }
 }
