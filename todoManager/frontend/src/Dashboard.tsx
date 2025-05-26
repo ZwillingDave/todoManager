@@ -15,10 +15,12 @@ function Dashboard() {
         <div className="Dashboard">
             <Navbar/>
             <header className="Dashboard-header">
+                <section className="appointment-section">
+                    <h1>Appointments</h1>
+                </section>
                 <section className="calender-section">
 
                     <Calendar onChange={handleDateChange} value={date} selectRange={false} />
-                    {date instanceof Date && <p>Selected date: {date.toDateString()}</p>}
                 </section>
 
 
