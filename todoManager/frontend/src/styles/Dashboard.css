@@ -1,0 +1,16 @@
+.Dashboard {
+    text-align: center;
+    font-family: "Nirmala UI", sans-serif;
+}
+
+.Dashboard-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}

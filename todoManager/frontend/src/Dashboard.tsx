@@ -1,26 +1,31 @@
-import React from 'react';
-import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
-import logo from './logo.svg';
-import './App.css';
-import * as http from "node:http";
-
+import React, {useState} from 'react';
+import './styles/Dashboard.css';
+import Navbar from "./components/Navbar";
+import Calendar, {CalendarProps} from "react-calendar";
+import "./styles/CustomCalendar.css";
+import {Value} from "react-calendar/dist/cjs/shared/types";
 
 function Dashboard() {
-  const navigate = useNavigate();
+    let [date, setDate] = useState<Value>(new Date());
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <section>
-          <h1>Dashboard</h1>
-        </section>
+    const handleDateChange: CalendarProps['onChange'] = (value, _event) => {
+        setDate(value);
+    };
+    return (
+        <div className="Dashboard">
+            <Navbar/>
+            <header className="Dashboard-header">
+                <section className="calender-section">
+
+                    <Calendar onChange={handleDateChange} value={date} selectRange={false} />
+                    {date instanceof Date && <p>Selected date: {date.toDateString()}</p>}
+                </section>
 
 
-
-      </header>
-    </div>
-  );
+            </header>
+        </div>
+    );
 }
 
 export default Dashboard;
+
