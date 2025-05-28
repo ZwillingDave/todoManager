@@ -6,7 +6,7 @@ import "./styles/CustomCalendar.css";
 import {Value} from "react-calendar/dist/cjs/shared/types";
 
 function Dashboard() {
-    let [date, setDate] = useState<Value>(new Date());
+    const [date, setDate] = useState<Value>(new Date());
 
     const handleDateChange: CalendarProps['onChange'] = (value, _event) => {
         setDate(value);
@@ -16,7 +16,13 @@ function Dashboard() {
             <Navbar/>
             <header className="Dashboard-header">
                 <section className="appointment-section">
-                    <h1>Appointments</h1>
+                    <section><h1>Appointments from<br/>
+                        {date instanceof Date && date.toLocaleDateString()}</h1></section>
+                    <section className={"appointment-list"}><div className="appointment-item">
+                        <h2>Appointment 1</h2>
+
+                    </div></section>
+                    <section><button>Add Appointment</button></section>
                 </section>
                 <section className="calender-section">
 

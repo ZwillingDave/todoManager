@@ -21,13 +21,50 @@
     flex: 3;
     background-color: wheat;
     margin: 0 1em 0 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: #bababa 5px solid;
+}
+.appointment-section h1 {
+    text-align: center;
+    margin: 0;
 
 
 }
-
+.appointment-section section:nth-child(1) {
+    color: black;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.appointment-section .appointment-list {
+    color: blue;
+    flex: 8;
+    overflow-y: scroll;
+}
+.appointment-section section:nth-child(3) {
+    color: pink;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.appointment-section section:nth-child(3) button {
+    background-color: #282c34;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    width: 90%;
+    height: 90%;
+    font-size: 22px;
+    cursor: pointer;
+}
 .calender-section {
     height: 80vh;
     flex: 9;
     margin: 0 1em 0 0;
-
+    border: #bababa 5px solid;
 }
